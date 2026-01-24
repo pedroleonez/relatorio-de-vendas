@@ -6,7 +6,6 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 function App() {
-  // Estados para dados e controle de filtros [cite: 10]
   const [vendas, setVendas] = useState([]);
   const [filtros, setFiltros] = useState({
     produto: '',
@@ -15,7 +14,6 @@ function App() {
     dataFim: ''
   });
 
-  // Função para buscar dados do Backend 
   const fetchRelatorio = async () => {
     try {
       const params = new URLSearchParams(filtros).toString();
@@ -27,22 +25,18 @@ function App() {
     }
   };
 
-  // Carrega os dados ao iniciar a tela [cite: 64]
   useEffect(() => {
     fetchRelatorio();
   }, []);
 
-  // Lógica de Exportação para PDF [cite: 35, 43]
   const exportarPDF = () => {
     const doc = new jsPDF();
     const dataGeracao = new Date().toLocaleString('pt-BR');
 
-    // Título e Data de Geração no PDF [cite: 37, 39]
     doc.text("Relatório de Vendas", 14, 15);
     doc.setFontSize(10);
     doc.text(`Gerado em: ${dataGeracao}`, 14, 22);
 
-    // Tabela com os dados no PDF [cite: 40]
     autoTable(doc, {
       startY: 30,
       head: [['Produto', 'Categoria', 'Qtd', 'Total', 'Data']],
@@ -61,7 +55,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Cabeçalho com Título e Botão de Exportar [cite: 31, 34] */}
+        {/* Cabeçalho com Título e Botão de Exportar */}
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <h1 className="text-2xl font-bold text-gray-800">Relatório de Vendas</h1>
           <button
@@ -72,7 +66,7 @@ function App() {
           </button>
         </header>
 
-        {/* Componente de Filtros [cite: 10] */}
+        {/* Componente de Filtros */}
         <Filtros 
           filtros={filtros} 
           setFiltros={setFiltros} 
@@ -80,11 +74,10 @@ function App() {
           onLimpar={() => {
             const reset = { produto: '', categoria: '', dataInicio: '', dataFim: '' };
             setFiltros(reset);
-            // Opcional: recarregar dados sem filtros após limpar
           }}
         />
 
-        {/* Tabela de Dados (Requisito Obrigatório) [cite: 32] */}
+        {/* Tabela de Dados */}
         <main className="bg-white rounded-xl shadow-sm overflow-hidden">
           <VendasTable data={vendas} />
           
