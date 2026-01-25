@@ -1,19 +1,18 @@
+import type { Dispatch, SetStateAction } from "react";
 import { Search, X } from "lucide-react";
+import type { FiltrosState } from "../types";
 
 interface FiltrosProps {
-  filtros: {
-    produto: string;
-    categoria: string;
-    dataInicio: string;
-    dataFim: string;
-  };
-  setFiltros: (filtros: any) => void;
+  filtros: FiltrosState;
+  categorias: string[];
+  setFiltros: Dispatch<SetStateAction<FiltrosState>>;
   onFiltrar: () => void;
   onLimpar: () => void;
 }
 
 export function Filtros({
   filtros,
+  categorias,
   setFiltros,
   onFiltrar,
   onLimpar,
@@ -42,15 +41,20 @@ export function Filtros({
           <label className="block text-xs font-medium text-gray-700 mb-1 uppercase">
             Categoria
           </label>
-          <input
-            type="text"
-            placeholder="Ex: Eletrônicos"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          <select
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
             value={filtros.categoria}
             onChange={(e) =>
               setFiltros({ ...filtros, categoria: e.target.value })
             }
-          />
+          >
+            <option value="">Todas as categorias</option>
+            {categorias.map((categoria) => (
+              <option key={categoria} value={categoria}>
+                {categoria}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Filtro por Data Início */}

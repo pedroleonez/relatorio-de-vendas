@@ -1,56 +1,43 @@
 import { useState, useEffect } from 'react';
+import { FileDown } from 'lucide-react';
 import { Filtros } from './components/Filtros';
 import { VendasTable } from './components/VendasTable';
-import { FileDown } from 'lucide-react';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { fetchCategorias, fetchRelatorio } from './services/api';
+import { exportarPDF } from './utils/pdf';
+import type { FiltrosState, Venda } from './types';
 
 function App() {
-  const [vendas, setVendas] = useState([]);
-  const [filtros, setFiltros] = useState({
+  const [vendas, setVendas] = useState<Venda[]>([]);
+  const [categorias, setCategorias] = useState<string[]>([]);
+  const [filtros, setFiltros] = useState<FiltrosState>({
     produto: '',
     categoria: '',
     dataInicio: '',
     dataFim: ''
   });
 
-  const fetchRelatorio = async () => {
+  const carregarRelatorio = async () => {
     try {
-      const params = new URLSearchParams(filtros).toString();
-      const response = await fetch(`http://localhost:3001/relatorio?${params}`);
-      const data = await response.json();
+      const data = await fetchRelatorio(filtros);
       setVendas(data);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
   };
 
-  useEffect(() => {
-    fetchRelatorio();
-  }, []);
-
-  const exportarPDF = () => {
-    const doc = new jsPDF();
-    const dataGeracao = new Date().toLocaleString('pt-BR');
-
-    doc.text("Relatório de Vendas", 14, 15);
-    doc.setFontSize(10);
-    doc.text(`Gerado em: ${dataGeracao}`, 14, 22);
-
-    autoTable(doc, {
-      startY: 30,
-      head: [['Produto', 'Categoria', 'Qtd', 'Total', 'Data']],
-      body: vendas.map((v: any) => [
-        v.produto,
-        v.categoria,
-        v.quantidade,
-        `R$ ${Number(v.valorTotal).toFixed(2)}`,
-        new Date(v.dataVenda).toLocaleDateString('pt-BR')
-      ]),
-    });
-
-    doc.save('relatorio-vendas.pdf');
+  const carregarCategorias = async () => {
+    try {
+      const data = await fetchCategorias();
+      setCategorias(data);
+    } catch (error) {
+      console.error("Erro ao carregar categorias:", error);
+    }
   };
+
+  useEffect(() => {
+    carregarRelatorio();
+    carregarCategorias();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -59,7 +46,7 @@ function App() {
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <h1 className="text-2xl font-bold text-gray-800">Relatório de Vendas</h1>
           <button
-            onClick={exportarPDF}
+            onClick={() => exportarPDF(vendas)}
             className="flex items-center justify-center gap-2 px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition-all"
           >
             <FileDown size={20} /> Exportar PDF
@@ -69,8 +56,9 @@ function App() {
         {/* Componente de Filtros */}
         <Filtros 
           filtros={filtros} 
-          setFiltros={setFiltros} 
-          onFiltrar={fetchRelatorio} 
+          setFiltros={setFiltros}
+          categorias={categorias}
+          onFiltrar={carregarRelatorio} 
           onLimpar={() => {
             const reset = { produto: '', categoria: '', dataInicio: '', dataFim: '' };
             setFiltros(reset);

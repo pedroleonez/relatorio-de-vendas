@@ -13,8 +13,6 @@ async function main() {
   
   const prisma = new PrismaClient({ adapter });
 
-  console.log('Iniciando seed...');
-
   await prisma.venda.deleteMany();
 
   const vendas = [
@@ -34,7 +32,6 @@ async function main() {
     await prisma.venda.create({ data: venda });
   }
 
-  console.log('Seed finalizado com sucesso!');
   await prisma.$disconnect();
 }
 

@@ -29,6 +29,21 @@ app.get('/relatorio', async (req: Request, res: Response) => {
   }
 });
 
+app.get('/categorias', async (_req: Request, res: Response) => {
+  try {
+    const categorias = await prisma.venda.findMany({
+      distinct: ['categoria'],
+      select: { categoria: true },
+      orderBy: { categoria: 'asc' }
+    });
+
+    return res.json(categorias.map((item) => item.categoria));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Erro ao buscar categorias' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
 });

@@ -4,15 +4,7 @@ import {
   flexRender,
   createColumnHelper,
 } from "@tanstack/react-table";
-
-interface Venda {
-  id: number;
-  produto: string;
-  categoria: string;
-  quantidade: number;
-  valorTotal: number;
-  dataVenda: string;
-}
+import type { Venda } from "../types";
 
 const columnHelper = createColumnHelper<Venda>();
 
