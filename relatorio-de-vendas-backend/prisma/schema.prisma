@@ -1,23 +1,23 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// Configuração do gerador de cliente Prisma
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client" // Gera o Prisma Client para TypeScript
+  output   = "../generated/prisma" // Diretório de saída dos arquivos gerados
 }
 
+// Configuração da fonte de dados (database)
 datasource db {
-  provider = "mysql"
+  provider = "mysql" // Usa MySQL como banco de dados
 }
 
+/**
+ * Model Venda - Representa registro de venda no sistema
+ * Armazena informações sobre produtos vendidos, quantidades e valores
+ */
 model Venda {
-  id              Int      @id @default(autoincrement())
-  produto         String
-  categoria       String
-  quantidade      Int
-  valorTotal      Decimal
-  dataVenda       DateTime
+  id              Int      @id @default(autoincrement()) // ID autoincrementado (chave primária)
+  produto         String   // Nome do produto vendido
+  categoria       String   // Categoria do produto (Eletrônicos, Móveis, etc)
+  quantidade      Int      // Quantidade de itens vendidos
+  valorTotal      Decimal  // Valor total da venda (suporta casas decimais)
+  dataVenda       DateTime // Data e hora da venda
 }

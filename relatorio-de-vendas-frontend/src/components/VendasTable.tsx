@@ -6,13 +6,17 @@ import {
 } from "@tanstack/react-table";
 import type { Venda } from "../types";
 
+// Helper para criação de colunas tipadas
 const columnHelper = createColumnHelper<Venda>();
 
+// Definição das colunas da tabela com formatação customizada
 const columns = [
+  // Coluna de produto - exibe texto simples
   columnHelper.accessor("produto", {
     header: "Produto",
     cell: (info) => info.getValue(),
   }),
+  // Coluna de categoria - exibe com badge colorida
   columnHelper.accessor("categoria", {
     header: "Categoria",
     cell: (info) => (
@@ -21,10 +25,12 @@ const columns = [
       </span>
     ),
   }),
+  // Coluna de quantidade - exibe número simples
   columnHelper.accessor("quantidade", {
     header: "Qtd",
     cell: (info) => info.getValue(),
   }),
+  // Coluna de valor total - formata como moeda brasileira
   columnHelper.accessor("valorTotal", {
     header: "Total",
     cell: (info) =>
@@ -33,17 +39,20 @@ const columns = [
         currency: "BRL",
       }).format(info.getValue()),
   }),
+  // Coluna de data - formata para padrão brasileiro (DD/MM/AAAA)
   columnHelper.accessor("dataVenda", {
     header: "Data",
     cell: (info) => new Date(info.getValue()).toLocaleDateString("pt-BR"),
   }),
 ];
 
+// Componente de tabela que renderiza os dados de vendas
 export function VendasTable({ data }: Readonly<{ data: Venda[] }>) {
+  // Inicializa instância da tabela com React Table
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    getCoreRowModel: getCoreRowModel(), // Modelo básico de renderização
   });
 
   return (
