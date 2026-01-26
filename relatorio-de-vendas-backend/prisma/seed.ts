@@ -22,7 +22,7 @@ async function main() {
     { produto: 'Teclado Mecânico', categoria: 'Periféricos', quantidade: 5, valorTotal: 1500.00, dataVenda: new Date('2026-01-08') },
     { produto: 'Cadeira Ergonômica', categoria: 'Móveis', quantidade: 1, valorTotal: 1200.00, dataVenda: new Date('2026-01-10') },
     { produto: 'Webcam 4K', categoria: 'Periféricos', quantidade: 2, valorTotal: 800.00, dataVenda: new Date('2026-01-12') },
-    { produto: 'Smartphone Pro', categoria: 'Eletrônicos', quantidade: 1, valorTotal: 5500.00, dataVenda: new Date('2026-01-15') },
+    { produto: 'Smartphone', categoria: 'Eletrônicos', quantidade: 1, valorTotal: 5500.00, dataVenda: new Date('2026-01-15') },
     { produto: 'Fone Bluetooth', categoria: 'Áudio', quantidade: 4, valorTotal: 1200.00, dataVenda: new Date('2026-01-18') },
     { produto: 'Mesa de Escritório', categoria: 'Móveis', quantidade: 1, valorTotal: 900.00, dataVenda: new Date('2026-01-20') },
     { produto: 'HD Externo 2TB', categoria: 'Armazenamento', quantidade: 3, valorTotal: 1350.00, dataVenda: new Date('2026-01-22') },
@@ -35,8 +35,9 @@ async function main() {
   await prisma.$disconnect();
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  });
+try {
+  await main();
+} catch (e) {
+  console.error(e);
+  process.exit(1);
+}

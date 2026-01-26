@@ -15,8 +15,8 @@ app.get('/relatorio', async (req: Request, res: Response) => {
 
     const vendas = await prisma.venda.findMany({
       where: {
-        produto: produto ? { contains: String(produto) } : undefined,
-        categoria: categoria ? String(categoria) : undefined,
+        produto: typeof produto === 'string' ? { contains: produto } : undefined,
+        categoria: typeof categoria === 'string' ? categoria : undefined,
       },
       orderBy: {
         dataVenda: 'desc'

@@ -22,10 +22,11 @@ export function Filtros({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Filtro por Nome do Produto */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1 uppercase">
+          <label htmlFor="filtro-produto" className="block text-xs font-medium text-gray-700 mb-1 uppercase">
             Produto
           </label>
           <input
+            id="filtro-produto"
             type="text"
             placeholder="Buscar produto..."
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
@@ -38,10 +39,11 @@ export function Filtros({
 
         {/* Filtro por Categoria */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1 uppercase">
+          <label htmlFor="filtro-categoria" className="block text-xs font-medium text-gray-700 mb-1 uppercase">
             Categoria
           </label>
           <select
+            id="filtro-categoria"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
             value={filtros.categoria}
             onChange={(e) =>
@@ -59,10 +61,11 @@ export function Filtros({
 
         {/* Filtro por Data Início */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1 uppercase">
+          <label htmlFor="filtro-data-inicio" className="block text-xs font-medium text-gray-700 mb-1 uppercase">
             De
           </label>
           <input
+            id="filtro-data-inicio"
             type="date"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             value={filtros.dataInicio}
@@ -74,10 +77,11 @@ export function Filtros({
 
         {/* Filtro por Data Fim */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1 uppercase">
+          <label htmlFor="filtro-data-fim" className="block text-xs font-medium text-gray-700 mb-1 uppercase">
             Até
           </label>
           <input
+            id="filtro-data-fim"
             type="date"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             value={filtros.dataFim}
